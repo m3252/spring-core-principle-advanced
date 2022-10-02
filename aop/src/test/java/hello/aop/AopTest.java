@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 @Slf4j
-@Import({AspectV5Order.LogAspect.class, AspectV5Order.TransactionAspect.class})
+@Import(AspectV6Advice.class)
 @SpringBootTest
 public class AopTest {
 
