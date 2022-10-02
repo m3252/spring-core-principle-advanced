@@ -52,3 +52,71 @@
 ### AOP 프록시
 
 - AOP 기능을 구현하기 위해 만든 프록시 객체, 스프링에서 AOP 프록시는 JDK 동적 프록시 또는 CGLIB 프록시이다.
+
+---
+
+## 어드바이스 종류
+
+- @Around
+  - 메서드 호출 전후에 수행, 가장 강력한 어드바이스이다.
+    - 조인 포인트 실행 여부 선택
+    - 반환 값 변환
+    - 예외 변환
+- @Before
+  - 조인 포인트 실행 이전에 실행
+- @AfterReturning
+  - 조인 포인트가 정상 완료 후 실행
+- @AfterThrowing
+  - 메서드가 예외를 던지는 경우 실행
+- @After
+  - 조인 포인틀가 정상 또는 예외에 관계없이 실행 (finally)
+
+#### 어드바이스 적용 시점
+
+```java
+    @Aspect
+    @Order(1)
+    public static class TransactionAspect {
+        //hello.aop.order 패지키와 하위 패키지이면서 클래스 이름 패턴이 *Service
+        @Around("Pointcuts.orderAndService()")
+        public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
+            try {
+                //@Before
+                log.info("[트랜잭션 시작] {}", joinPoint.getSignature());
+                Object result = joinPoint.proceed();
+                //@AfterReturning
+                log.info("[트랜잭션 커밋] {}", joinPoint.getSignature());
+                return result;
+            } catch (Exception e) {
+                //@AfterThrowing
+                log.info("[트랜잭션 롤백] {}", joinPoint.getSignature());
+                throw e;
+            } finally {
+                //@After
+                log.info("[리소스 릴리즈] {}", joinPoint.getSignature());
+            }
+        }
+
+    }
+```
+
+#### JoinPoint, ProceedingJoinPoint
+
+- ProceedingJoinPoint는 org.aspectj.lang.JoinPoint의 하위타입이다.
+- JoinPoint 인터페이스의 주요 기능
+  - getArgs()
+    - 메서드 인수를 반환
+  - getThis()
+    - 프록시 객체를 반환
+  - getTarget()
+    - 대상 객체를 반환
+  - getSignature()
+    - 조인되는 메서드에 대한 설명을 반환
+  - toString()
+    - 조인되는 방법에 대한 유용한 설명을 인쇄
+
+  
+---
+
+
+
