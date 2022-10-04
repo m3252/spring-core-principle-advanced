@@ -154,3 +154,27 @@
   - 전달된 실제 인수의 런타임 타입이 주어진 타입의 애노테잏션을 갖는 조인 포인트
 - `bean`
   - 스프링 전용 포인트컷 지시자, 빈의 이름으로 포인트컷을 지정
+
+### execution 문법
+
+~~~
+execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern) throws-pattern?)
+
+execution(접근제어자? 반환타입 선언타입?메서드이름(파라미터) 예외?
+~~~
+
+- 메소드 실행 조인 포인트
+- '?' 는 생략 가능
+- '*' 같은 패턴을 지정할 수 있다.
+
+#### 매칭 조건
+~~~
+execution(public String hello.aop.member.MemberServiceImpl.hello(String))
+~~~
+
+- 접근제어자? `public`
+- 반환타입 `String`
+- 선언타입 `hello.aop.member.MemberServiceImpl`
+- 메서드이름 `hello`
+- 파라미터 `(String)`
+- 예외? 생략
