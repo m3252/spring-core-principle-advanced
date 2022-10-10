@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootTest(properties = "spring.aop.proxy-target-class=true") //CGLIB
 public class ThisTargetTest {
 
-    @Autowired이
+    @Autowired
     MemberService memberService;
 
     @Test
